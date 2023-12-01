@@ -841,7 +841,7 @@ export class QuestionComponent implements OnInit, AfterViewInit, OnDestroy {
       metadata.collectionId = _.get(this.editorService, 'editorConfig.context.collectionIdentifier');
       metadata.organisationId = _.get(this.editorService, 'editorConfig.context.contributionOrgId');
     }
-    metadata['outcomeDeclaration'] = this.getOutcomeDeclaration(metadata);
+    // metadata['outcomeDeclaration'] = this.getOutcomeDeclaration(metadata);
     metadata = _.merge(metadata, _.pickBy(this.childFormData, _.identity));
     if (_.get(this.creationContext, 'objectType') === 'question') {
       metadata.isReviewModificationAllowed = !!_.get(this.questionMetaData, 'isReviewModificationAllowed');

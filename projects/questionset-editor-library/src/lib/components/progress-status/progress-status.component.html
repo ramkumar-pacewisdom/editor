@@ -6,6 +6,9 @@
             <div class="ui">
                 <div class="ui twelve column grid m-0">
                     <div class="three wide column p-0 overflow-y  mb-40 h-100vh">
+                        <lib-plain-tree class="sb-collectionTree-fancyTree sb-collectionTree-fancyTreelist sb-questionset-scroll"
+                        [treeData]="treeData" (treeEmitter)="treeEventListener($event)">
+                      </lib-plain-tree>
                     </div>
                     <!-- Right Player Sections -->
                     <div class="eight wide column bg-white pl-40 mb-10 w-73">
@@ -19,19 +22,19 @@
                                     <th class="width-10"></th>
                                 </tr>
                             </thead>
-                            <tbody *ngFor="let item of data;let i=index">
+                            <tbody *ngFor="let item of criteriaList">
                                 <tr>
-                                    <td class="padding-x-25 font-blue font-bold">{{item.criteria}}</td>
-                                    <td><input type="number" value="{{item.maxScore}}" disabled></td>
-                                    <td><input type="number" value="{{item.minScore}}" disabled></td>
-                                    <td><input type="number" value="{{item.questionsCreated}}" disabled></td>
-                                    <td class="border flex" (click)="expand(item)"><i [class]="expandedElement==item?.criteria ? 'chevron up icon font-blue' : 'chevron down icon font-blue'"></i></td>
+                                    <td class="padding-x-25 font-blue font-bold">{{item.title}}</td>
+                                    <td><input type="number" value="10" disabled></td>
+                                    <td><input type="number" value="20" disabled></td>
+                                    <td><input type="number" value="{{item.children.length}}" disabled></td>
+                                    <td class="border flex" (click)="expand(item)"><i [class]="expandedElement==item?.id ? 'chevron up icon font-blue' : 'chevron down icon font-blue'"></i></td>
                                 </tr>
-                                <tr *ngIf="expandedElement==item?.criteria" class="hidden-block">
+                                <tr *ngIf="expandedElement==item?.id" class="hidden-block">
                                     <td class="padding-x-20"></td>
-                                    <td><div><label class="label">Level 1</label></div><input class="hidden-input" type="number" value="{{item.maxScore}}" disabled></td>
-                                    <td><div><label class="label">Level 2</label></div><input class="hidden-input" type="number" value="{{item.minScore}}" disabled></td>
-                                    <td><div><label class="label">Level 3</label></div><input class="hidden-input" type="number" value="{{item.questionsCreated}}" disabled></td>
+                                    <td><div><label class="label">{{item.title}} Level 1</label></div><input class="hidden-input" type="number" value="10" disabled></td>
+                                    <td><div><label class="label">Level 2</label></div><input class="hidden-input" type="number" value="20" disabled></td>
+                                    <td><div><label class="label">Level 3</label></div><input class="hidden-input" type="number" value="30" disabled></td>
                                     <td class="flex"></td>
                                 </tr>
                             </tbody>

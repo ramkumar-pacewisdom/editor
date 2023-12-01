@@ -22,7 +22,7 @@
     </div>
     {{configService.labelConfig?.button_labels?.add_from_library_btn_label}}
   </button>
-  <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!visibility?.createNew"
+  <button class="sb-btn sb-btn-normal sb-btn-primary"
     [ngClass]="[!visibility?.createNew ? 'sb-btn-outline-disabled' : '', (visibility?.createNew && buttonLoaders?.addFromLibraryButtonLoader) ? 'sb-btn-loading-spinner sb-btn-outline-disabled': '']"
     type="button"  (click)="createNewContent()"
     libTelemetryInteract

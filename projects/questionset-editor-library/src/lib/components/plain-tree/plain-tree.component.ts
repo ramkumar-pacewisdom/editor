@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -11,18 +12,22 @@ import 'jquery.fancytree';
 import * as _ from 'lodash-es';
 import { EditorService } from '../../services/editor/editor.service';
 
-declare const $: any;
+declare var $: any;
 
 @Component({
   selector: 'lib-plain-tree',
-  templateUrl: './plain-tree.component.html'
+  templateUrl: './plain-tree.component.html',
 })
-export class PlainTreeComponent implements AfterViewInit {
+export class PlainTreeComponent implements OnInit, AfterViewInit {
   @ViewChild('plainTree') public tree: ElementRef;
   @Input() treeData;
   @Output() treeEmitter: EventEmitter<any> = new EventEmitter<any>();
+  @Input() depthLevel?= 1
+  treeList: any = []
 
   constructor(private editorService: EditorService) {}
+
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.renderTree(this.getTreeConfig());
@@ -32,41 +37,24 @@ export class PlainTreeComponent implements AfterViewInit {
     $(this.tree.nativeElement).fancytree(options);
   }
 
-  buildTreeData(data) {
-    let tree = [];
-    _.forEach(data, (child: any) => {
-      if (child.children) {
-        _.forEach(child.children, (data) => {
-          tree.push({
-            id: data?.id,
-            title: data?.title,
-            tooltip: data?.title,
-            primaryCategory: _.get(
-              this.editorService,
-              'editorConfig.config.primaryCategory'
-            ),
-            metadata: {
-              objectType: _.get(
-                this.editorService,
-                'editorConfig.config.objectType'
-              ),
-              name: data?.title,
-            },
-            folder: true,
-            root: false,
-            icon: 'fa fa-folder-o',
-          });
-        });
+  buildTreeData(data, loopCount = 1) {
+    this.treeList = []
+    let loopData: any = []
+    _.forEach(data, (item: any, idx) => {
+      if (loopCount == this.depthLevel) {
+        this.treeList.push(this.populateData(item))
+      } else {
+        loopData = _.concat(loopData, item.children)
       }
-    });
-    return tree;
+      if ((data.length == idx + 1) && (loopCount != this.depthLevel)) {
+        this.buildTreeData(loopData, loopCount + 1)
+      }
+    })
+    return this.treeList
   }
 
   getQuestionsList(data) {
-    this.treeEmitter.emit({
-      identifier: _.get(data, 'id'),
-      criteriaName: _.get(data, 'metadata.name')
-    });
+    this.treeEmitter.emit(data)
   }
 
   getTreeConfig() {
@@ -133,6 +121,23 @@ export class PlainTreeComponent implements AfterViewInit {
       },
     };
     return options;
+  }
+
+  populateData(data: any) {
+    return {
+      id: data?.id,
+      title: data?.title,
+      tooltip: data?.title,
+      primaryCategory: _.get(this.editorService, 'editorConfig.config.primaryCategory'),
+      metadata: {
+        objectType: _.get(this.editorService, 'editorConfig.config.objectType'),
+        name: data?.title,
+      },
+      data: data,
+      folder: true,
+      root: false,
+      icon: 'fa fa-folder-o'
+    }
   }
 
 }

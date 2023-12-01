@@ -237,14 +237,24 @@ export class TreeService {
   }
 
   setTreeCache(nodeId, metadata, activeNode?) {
+    debugger;
     if (this.treeCache.nodesModified[nodeId]) {
       // tslint:disable-next-line:max-line-length
+      if(this.treeCache.nodesModified[nodeId].metadata.primaryCategory == "Observation With Rubrics") {
+        this.treeCache.nodesModified[nodeId].metadata.primaryCategory = "Observation With Rubrics"
+        this.treeCache.nodesModified[nodeId].objectType = "QuestionSet"
+        this.treeCache.nodesModified[nodeId].metadata.mimeType = "application/vnd.sunbird.questionset"
+      }
+      else {
+        this.treeCache.nodesModified[nodeId].objectType = "Question"
+      }
       this.treeCache.nodesModified[nodeId].metadata = _.assign(this.treeCache.nodesModified[nodeId].metadata, _.omit(metadata, 'objectType'));
+
     } else {
       this.treeCache.nodesModified[nodeId] = {
         root: activeNode && activeNode.root ? true : false,
-        objectType: metadata.objectType,
-        metadata: { ..._.omit(metadata, ['objectType']) },
+        // objectType:"QuestionSet",
+        metadata: { mimeType:"application/vnd.sunbird.questionset",primaryCategory :"Observation With Rubrics",..._.omit(metadata, ['objectType'])},
         ...(nodeId.includes('do_') ? { isNew: false } : { isNew: true })
       };
       this.treeCache.nodes.push(nodeId); // To track sequence of modifiation

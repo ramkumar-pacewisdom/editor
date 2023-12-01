@@ -1,27 +1,27 @@
 {
   "URLS": {
     "QuestionSet": {
-      "ADD": "questionset/v2/add",
-      "READ": "questionset/v2/read",
-      "UPDATE": "questionset/v2/update/",
-      "REVIEW" : "questionset/v2/review/",
-      "REJECT" : "questionset/v2/reject/",
-      "PUBLISH" : "questionset/v2/publish/",
-      "DELETENODE" : "questionset/v2/remove",
-      "HIERARCHY_READ": "questionset/v2/hierarchy",
-      "SYSYTEM_UPDATE": "questionset/v2/system/update/",
-      "HIERARCHY_UPDATE": "questionset/v2/hierarchy/update",
+      "ADD": "questionset/v1/add",
+      "READ": "questionset/v1/read",
+      "UPDATE": "questionset/v1/update/",
+      "REVIEW" : "questionset/v1/review/",
+      "REJECT" : "questionset/v1/reject/",
+      "PUBLISH" : "questionset/v1/publish/",
+      "DELETENODE" : "questionset/v1/remove",
+      "HIERARCHY_READ": "questionset/v1/hierarchy",
+      "SYSYTEM_UPDATE": "questionset/v1/system/update/",
+      "HIERARCHY_UPDATE": "questionset/v1/hierarchy/update",
       "DEFAULT_PARAMS_FIELDS": "instructions,outcomeDeclaration"
     },
     "Question": {
-      "LIST":"question/v2/list",
-      "READ":"question/v2/read/",
-      "CREATE": "question/v2/create",
-      "UPDATE": "question/v2/update/",
-      "REVIEW" : "question/v2/review/",
-      "REJECT": "question/v2/reject/",
-      "PUBLISH": "question/v2/publish/",
-      "SYSYTEM_UPDATE": "question/v2/system/update/"
+      "LIST":"question/v1/list",
+      "READ":"question/v1/read/",
+      "CREATE": "question/v1/create",
+      "UPDATE": "question/v1/update/",
+      "REVIEW" : "question/v1/review/",
+      "REJECT": "question/v1/reject/",
+      "PUBLISH": "question/v1/publish/",
+      "SYSYTEM_UPDATE": "question/v1/system/update/"
     },
     "Collection": {
       "HIERARCHY_READ": "content/v3/hierarchy",

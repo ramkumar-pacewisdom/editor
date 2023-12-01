@@ -145,12 +145,12 @@
     <lib-question *ngIf="leafFormConfig" [questionInput]="questionComponentInput" [leafFormConfig]="leafFormConfig" [sourcingSettings]="sourcingSettings"  (questionEmitter)="questionEventListener($event)" >
     </lib-question>
   </ng-container>
-  <ng-container *ngSwitchCase="'pagination'">
+  <!-- <ng-container>
     <lib-assign-page-number (assignPageEmitter)="assignPageEmitterListener($event)"></lib-assign-page-number>
   </ng-container>
-  <ng-container *ngSwitchCase="'progressStatus'">
+  <ng-container>
     <lib-progress-status (assignPageEmitter)="assignPageEmitterListener($event)"></lib-progress-status>
-  </ng-container>
+  </ng-container> -->
 </ng-container>
 <sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal bx-none overflow-modal" appBodyScroll #modal (dismissed)="showReviewModal = false;">

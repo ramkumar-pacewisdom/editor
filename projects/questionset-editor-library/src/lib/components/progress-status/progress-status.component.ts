@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EditorService } from '../../services/editor/editor.service';
+import * as _ from 'lodash-es'
 
 @Component({
   selector: 'lib-progress-status',
@@ -9,32 +10,58 @@ import { EditorService } from '../../services/editor/editor.service';
 export class ProgressStatusComponent implements OnInit {
   toolbarConfig: any = {};
   pageId = 'progressStatus';
-  data=[{criteria:"Classrooms",maxScore:10,minScore:10,questionsCreated:10,isExpanded:false},
-        {criteria:"Toilets",maxScore:10,minScore:10,questionsCreated:10,isExpanded:false},
-        {criteria:"Assembly",maxScore:10,minScore:10,questionsCreated:10,isExpanded:false},
-        {criteria:"Teaching and Learning",maxScore:10,minScore:10,questionsCreated:10,isExpanded:false}]
   expandedElement="";
-  @Output() assignPageEmitter = new EventEmitter<any>();
+  treeData:any
+  criteriaList:any
+  @Output() progressStatusEmitter = new EventEmitter<any>();
   
   constructor(private editorService: EditorService) { }
 
   ngOnInit(): void {
     this.toolbarConfig = this.editorService.getToolbarConfig();
     this.toolbarConfig.title = 'Observation Form';
+    this.treeData=this.editorService.treeData
+    let initialData = _.first(this.treeData);
+    let data={
+      id:initialData.id,
+      title:initialData?.title,
+      tooltip:initialData?.title,
+      primaryCategory:_.get(this.editorService,'editorConfig.config.primaryCategory'),
+      metadata:{
+        objectType:_.get(this.editorService,'editorConfig.config.objectType'),
+        name:initialData?.title
+      },
+      children:initialData?.children,
+      root:false,
+      icon:'fa fa-folder-o',
+      folder:true
+    }
+    this.treeEventListener(data)
   }
 
   toolbarEventListener(event) {
-    if(event?.button === 'backContent') {
-      this.redirectToQuestionSet();
+    switch (event.button) {
+      case 'backContent':
+        this.redirectToQuestionSet();
+        break;
+      default :
+        break;
     }
   }
 
   redirectToQuestionSet() {
-      this.assignPageEmitter.emit({ status: false });
+      this.progressStatusEmitter.emit({ status: false });
   }
 
   expand(event){
-    this.expandedElement = (this.expandedElement==event.criteria)?"":event.criteria;
+    this.expandedElement = (this.expandedElement==event.id)?"":event.id;
+  }
+
+
+  treeEventListener(event){
+    if(!_.isEmpty(event.children)){
+      this.criteriaList=event.children
+    }
   }
 
 }

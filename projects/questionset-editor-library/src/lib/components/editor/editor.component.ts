@@ -119,10 +119,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editorService.initialize(this.editorConfig);
     this.editorMode = this.editorService.editorMode;
     this.treeService.initialize(this.editorConfig);
-    this.objectType = this.configService.categoryConfig[this.editorConfig.config.objectType];
+    this.objectType = "questionSet";
     this.collectionId = _.get(this.editorConfig, 'context.identifier');
     this.toolbarConfig = this.editorService.getToolbarConfig();
-    this.isObjectTypeCollection = this.objectType === 'questionset' ? false : true;
+    this.isObjectTypeCollection = this.objectType === 'questionSet' ? false : true;
     this.isStatusReviewMode = this.isReviewMode();
 
     if (this.objectType === 'question') {
@@ -324,7 +324,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
         field.options = this.setEcm;
       }
     });
-    if ( this.objectType === 'questionset' && _.has(formsConfigObj, 'searchConfig')) {
+    if ( this.objectType === 'questionSet' && _.has(formsConfigObj, 'searchConfig')) {
         this.questionlibraryInput.searchFormConfig = _.get(formsConfigObj, 'searchConfig.properties');
     } else {
       this.questionlibraryInput.searchFormConfig = _.get(formsConfigObj, 'search.properties');
@@ -346,7 +346,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.collectionTreeNodes = null;
     this.isTreeInitialized = true;
     requests.push(this.editorService.fetchCollectionHierarchy(this.collectionId));
-    if (this.objectType === 'questionset') {
+    if (this.objectType === 'questionSet') {
       requests.push(this.editorService.readQuestionSet(this.collectionId));
     }
     return forkJoin(requests).pipe(tap(responseList => {
@@ -361,7 +361,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toolbarConfig.hasChildren = true;
       }
 
-      if (this.objectType === 'questionset') {
+      if (this.objectType === 'questionSet') {
         const questionSetResponse = _.last(responseList);
         const data = _.get(questionSetResponse, _.toLower(`result.${this.objectType}`));
         this.collectionTreeNodes.data.instructions = data.instructions ? data.instructions : '';
@@ -617,10 +617,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!this.validateFormStatus()) {
         return reject(_.get(this.configService, 'labelConfig.messages.error.029'));
       }
-      if (this.objectType.toLowerCase() === 'questionset') {
-        const maxScore = await this.editorService.getMaxScore();
-        this.treeService.updateMetaDataProperty('outcomeDeclaration', { maxScore: { cardinality: 'single', type: 'integer', defaultValue: maxScore } });
-      }
+      // if (this.objectType === 'questionSet') {
+      //   const maxScore = await this.editorService.getMaxScore();
+      //   this.treeService.updateMetaDataProperty('outcomeDeclaration', { maxScore: { cardinality: 'single', type: 'integer', defaultValue: maxScore } });
+      // }
       this.editorService.updateHierarchy()
         .pipe(map(data => _.get(data, 'result'))).subscribe(response => {
           if (!_.isEmpty(response.identifiers)) {

@@ -401,15 +401,19 @@ export class EditorService {
   }
 
   getHierarchyObj(data, questionId?, selectUnitId?, parentId?) {
+    debugger;
     const instance = this;
     if (data && data.data) {
       const relationalMetadata = this.getRelationalMetadataObj(data.children);
       instance.data[data.data.id] = {
         name: data.title,
-        children: _.map(data.children, (child) => child.data.id),
+        objectType:"QuestionSet",
         ...(!_.isEmpty(relationalMetadata) &&  {relationalMetadata}),
         root: data.data.root
       };
+      if(data.data.metadata.objectType != "Question" ) {
+        instance.data[data.data.id].children = _.map(data.children, (child) => child.data.id)
+      }
       if (questionId && selectUnitId && selectUnitId === data.data.id) {
           if (parentId) {
             const children = instance.data[data.data.id].children;

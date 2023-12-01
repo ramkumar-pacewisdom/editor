@@ -1,7 +1,7 @@
  <div class="aspectratio handle-zoom" data-ratio="16:9">
      <div class="content-player">
         <div class="w-100 h-100">
-                <div class="contentViewerIframeShadow" *ngIf="!showViewButton">
+                <div class="contentViewerIframeShadow">
                     <span id="qumlPlayer" #qumlPlayer></span>
                 </div>
                 <div class="mt-25" *ngIf="(editorService?.editorMode !== 'edit' && showViewButton)">
